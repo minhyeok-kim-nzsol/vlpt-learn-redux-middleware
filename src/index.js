@@ -10,10 +10,18 @@ import rootReducer from "./modules";
 import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 import ReduxThunk from "redux-thunk";
+<<<<<<< HEAD
+=======
+import { Router } from "react-router-dom";
+import { createBrowserHistory } from 'history';
+
+const customHistory = createBrowserHistory();
+>>>>>>> Thunk완료
 
 //const store = createStore(rootReducer, applyMiddleware(myLogger));
 const store = createStore(
   rootReducer,
+<<<<<<< HEAD
   composeWithDevTools(applyMiddleware(ReduxThunk, logger))
 );
 
@@ -21,6 +29,21 @@ ReactDOM.render(
   <Provider store={store}>
     <App />
   </Provider>,
+=======
+composeWithDevTools(
+  applyMiddleware(
+    ReduxThunk.withExtraArgument({ history: customHistory }), 
+    logger
+  )
+));
+
+ReactDOM.render(
+  <Router history={customHistory}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </Router>,
+>>>>>>> Thunk완료
   document.getElementById("root")
 );
 
