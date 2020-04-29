@@ -5,37 +5,35 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import rootReducer from "./modules";
+import rootReducer, { rootSaga } from "./modules";
 //import myLogger from "./middlewares/myLogger";
 import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 import ReduxThunk from "redux-thunk";
-<<<<<<< HEAD
-=======
 import { Router } from "react-router-dom";
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
+import createSagaMiddleware from 'redux-saga';
 
 const customHistory = createBrowserHistory();
->>>>>>> Thunk완료
+const sagaMiddleware = createSagaMiddleware({
+  context: {
+    history: customHistory
+  }
+});
 
-//const store = createStore(rootReducer, applyMiddleware(myLogger));
+// const store = createStore(rootReducer, applyMiddleware(myLogger));
 const store = createStore(
   rootReducer,
-<<<<<<< HEAD
-  composeWithDevTools(applyMiddleware(ReduxThunk, logger))
+  composeWithDevTools(
+    applyMiddleware(
+      ReduxThunk.withExtraArgument({ history: customHistory }),
+      sagaMiddleware,
+      logger
+    )
+  )
 );
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-=======
-composeWithDevTools(
-  applyMiddleware(
-    ReduxThunk.withExtraArgument({ history: customHistory }), 
-    logger
-  )
-));
+sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
   <Router history={customHistory}>
@@ -43,7 +41,6 @@ ReactDOM.render(
       <App />
     </Provider>
   </Router>,
->>>>>>> Thunk완료
   document.getElementById("root")
 );
 
